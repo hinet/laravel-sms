@@ -63,6 +63,13 @@ Validator::extend('verify_sms_code', function ($attribute, $value, $parameters) 
 	return $gateway->verifyCode($mobile,$value);
 });
 ```
+验证示例：
+```php
+$validator = Validator::make($data, [
+      'phone' => 'unique:表名',
+      'verifyCode' => 'verify_sms_code:phone',//phone为表单中的手机号字段名
+]);
+```
 
 ## Testing
 拷贝单元测试文件SmsUnitTest.php到根目录tests文件中',并在命令行执行:
