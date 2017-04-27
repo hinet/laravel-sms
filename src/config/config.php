@@ -39,6 +39,6 @@ return[
     //存储器
     'storage' => [
         'prefix' => '',//存储key的前缀
-        'driver' => 'session',//存储方式,内置可选的值有'session'和'cache',
+        'driver' => 'session',//存储方式,内置可选的值有'session'和'cache',api路由请使用cache驱动
     ]
 ];
