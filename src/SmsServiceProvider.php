@@ -24,7 +24,7 @@ class SmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('Sms', function () {
+        $this->app->singleton('sms', function () {
             return new SmsManager($this->app);
         });
     }
@@ -35,7 +35,7 @@ class SmsServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['Sms'];
+        return ['sms'];
     }
 
 }

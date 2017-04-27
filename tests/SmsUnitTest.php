@@ -1,7 +1,6 @@
 <?php
 namespace Hinet\Sms;
-use Tests\TestCase;
-class SmsUnitTest extends TestCase
+class SmsUnitTest extends \TestCase
 {
     private $mobile = '13837193800';//测试手机号码'
     public function setUp()
@@ -11,7 +10,7 @@ class SmsUnitTest extends TestCase
     }
     public function manager()
     {
-        return new SmsManage($this->app);
+        return new SmsManager($this->app);
     }
     public function testGateway()
     {

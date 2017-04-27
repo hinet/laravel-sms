@@ -6,10 +6,10 @@
  * Time: 9:32
  */
 
-namespace Hinet\Sms;
+namespace Hinet\Sms\Storage;
 
 
-class SessionStorage implements Storage
+class SessionStorage implements Storager
 {
     public function set($key, $value)
     {

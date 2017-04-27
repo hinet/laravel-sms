@@ -6,10 +6,10 @@
  * Time: 9:31
  */
 
-namespace Hinet\Sms;
+namespace Hinet\Sms\Storage;
 
 use Cache;
-class CacheStorage implements Storage
+class CacheStorage implements Storager
 {
     protected static $lifetime = 120;
     public static function setMinutesOfLifeTime($time)

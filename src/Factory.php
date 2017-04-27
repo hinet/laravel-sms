@@ -1,6 +1,6 @@
 <?php
 namespace Hinet\Sms;
-
+use Hinet\Sms\Storage\Storager;
 class Factory
 {
     //静态KEY
@@ -79,13 +79,13 @@ class Factory
         if (self::$storage) {
             return self::$storage;
         }
-        $className = (self::$driver == 'session') ? 'Hinet\Sms\SessionStorage' : 'Hinet\Sms\CacheStorage';
+        $className = (self::$driver == 'session') ? 'Hinet\Sms\Storage\SessionStorage' : 'Hinet\Sms\Storage\CacheStorage';
         if (!class_exists($className)) {
             throw new \InvalidArgumentException("Generate storage failed, the class $className does not exists.");
         }
         $store = new $className();//Hinet\Sms\Storage\CacheStorage        
-        if (!($store instanceof Storage)) {
-            throw new \InvalidArgumentException("Generate storage failed, the class $className does not implement the interface [Hinet\\Sms\\Storage].");
+        if (!($store instanceof Storager)) {
+            throw new \InvalidArgumentException("Generate storage failed, the class $className does not implement the interface [Hinet\\Sms\\Storage\\Storager].");
         }
         return self::$storage = $store;
     }
