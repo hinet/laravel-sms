@@ -2,7 +2,7 @@
 return[
     'debug' => false,
     //默认短信网关
-    'default' => env('SMS_GATEWAY_DEFAULT',''),
+    'default' => env('SMS_GATEWAY_DEFAULT','qcloud'),
     //间隔时间(秒)
     'interval' => 60,
     //尝试次数,超过该数值验证码自动失效，0或负数则不启用
