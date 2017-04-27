@@ -20,7 +20,17 @@ Hinet\Sms\SmsServiceProvider::class,
 ```php
 php artisan vendor:publish --tag=smsconfig
 ```
+* 注意事项
 
+在web路由中，可以使用session或cache来存储状态；在api路由需要使用cache存储，因为api中间件中不含session会话支持
+```php
+//config/sms.php
+//存储器
+'storage' => [
+        'prefix' => '',//存储key的前缀
+        'driver' => 'cache',//存储方式,内置可选的值有'session'和'cache',api路由中请使用cache
+]
+```
 ## 使用方法
 
 ```php
@@ -43,7 +53,16 @@ class HomeController extends Controller
 }
 ```
 
+## 自定义验证
 
+打开app\Providers\ValidatorServiceProvider.php文件，在boot()方法中添加：
+```php
+Validator::extend('verify_sms_code', function ($attribute, $value, $parameters) {
+	$mobile = app('request')->input($parameters[0]);
+	$gateway = \Sms::gateway(config('sms.default'));
+	return $gateway->verifyCode($mobile,$value);
+});
+```
 
 ## Testing
 拷贝单元测试文件SmsUnitTest.php到根目录tests文件中',并在命令行执行:
