@@ -78,7 +78,7 @@ class Gateway implements Repository
             return json_encode(['status'=>0,'message'=>'发送过于频繁']);
         }
         $this->storage->storeState();
-        $this->storage->setCanResendAfter((int)$this->config['interval']);
+        $this->storage->setCanResendAfter(intval($this->config['interval']));
         if (empty($this->content)) {
             $this->content = $this->getTemplateContent();
         }
