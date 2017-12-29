@@ -60,7 +60,7 @@ class Gateway implements Repository
                 return false;
             }
         }
-        return $state && $state['deadline'] >= time() && $state['to'] === $mobile && $state['verifycode'] == (int)$value;
+        return $state && $state['deadline'] >= time() && $state['to'] === $mobile && $state['verifycode'] == intval($value);
     }
 
     public function setVerifyCode($phone='')
@@ -70,7 +70,7 @@ class Gateway implements Repository
         $this->storage->setState([
             'send'     => true,
             'to'       => $phone,
-            'verifycode'     => $this->code,
+            'verifycode' => $this->code,
             'deadline' => time() + ($this->config['minutes'] * 60),
             'attempts' => $this->config['attempts'],
         ]);
