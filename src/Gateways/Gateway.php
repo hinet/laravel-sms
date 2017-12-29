@@ -101,7 +101,7 @@ class Gateway implements Repository
         if(strtoupper($method) == 'POST')
         {
             curl_setopt($ch , CURLOPT_POST , true);
-            curl_setopt($ch , CURLOPT_POSTFIELDS , $params);
+            curl_setopt($ch , CURLOPT_POSTFIELDS , json_encode($params));
             curl_setopt($ch , CURLOPT_URL , $url);
         }
         else
