@@ -87,13 +87,14 @@ class Gateway implements Repository
 
     }
 
-    public function curl($url,$params = array(),$method='GET')
+    public function curl($url,$params = array(),$method='GET', $headers = array())
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTP_VERSION , CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_USERAGENT , 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22');
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 30);
         curl_setopt($ch, CURLOPT_TIMEOUT , 30);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER , true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER , false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST , false);

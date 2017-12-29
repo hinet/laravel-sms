@@ -7,11 +7,9 @@
  */
 
 namespace Hinet\Sms\Gateways;
-use Hinet\Sms\Factory;
 
 class QcloudGateway extends Gateway
 {
-    protected $random;
     public function send($mobile, $content='')
     {
         $this->setVerifyCode($mobile);
@@ -26,7 +24,7 @@ class QcloudGateway extends Gateway
         ];
 
         $params['sig'] = $this->genSign($params);
-        return $this->curl($url.'?'.'sdkappid='.$this->config['app_id'].'&random='.$this->random,json_encode($params),'POST');
+        return $this->curl($url.'?'.'sdkappid='.$this->config['app_id'].'&random='.$this->code,json_encode($params),'POST');
     }
     public function response($response)
     {
@@ -45,12 +43,8 @@ class QcloudGateway extends Gateway
     }
     protected function genSign($params)
     {
-        $this->random = $this->getRandom();
         $phone = $params['tel']["mobile"];
-        $signature = "appkey=".$this->config['app_key']."&random=".$this->random."&time=".$params['time']."&mobile=".$phone;
+        $signature = "appkey=".$this->config['app_key']."&random=".$this->code."&time=".$params['time']."&mobile=".$phone;
         return hash("sha256",$signature, FALSE);
-    }
-    protected function getRandom() {
-        return rand(100000, 999999);
     }
 }

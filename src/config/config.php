@@ -35,6 +35,16 @@ return[
                 'content' => ''
             ]
         ],
+        'baidu' =>[
+            'endPoint' => 'sms.bj.baidubce.com',//SMS服务域名
+            'accessKey' => '百度云安全认证Access Key',
+            'secretAccessKey' => '百度云安全认证Secret Key',
+            'invokeId'=>'签名调用ID',
+            'template' => [
+                'templateid' => '模板ID',
+                'content' => '您的验证码是${code}，如非本人操作，请忽略本短信'
+            ]
+        ],
     ],
     //存储器
     'storage' => [
