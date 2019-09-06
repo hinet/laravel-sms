@@ -17,10 +17,12 @@ class SessionStorage implements Storager
             $key => $value,
         ]);
     }
+
     public function get($key, $default)
     {
         return session($key, $default);
     }
+
     public function forget($key)
     {
         session()->forget($key);

@@ -1,4 +1,5 @@
 <?php
+
 namespace Hinet\Sms;
 
 use Illuminate\Support\ServiceProvider;
@@ -6,19 +7,19 @@ use Illuminate\Support\ServiceProvider;
 class SmsServiceProvider extends ServiceProvider
 {
     protected $defer = true;
+
     /**
-	 * Perform post-registration booting of services.
-	 *
-	 * @return void
-	 */
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
     public function boot()
     {
-        if (!function_exists('config_path'))
-        {
+        if (!function_exists('config_path')) {
             /**
              * Get the configuration path.
              *
-             * @param  string $path
+             * @param string $path
              * @return string
              */
             function config_path($path = '')
@@ -26,10 +27,11 @@ class SmsServiceProvider extends ServiceProvider
                 return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
             }
         }
-	    $this->publishes([
-	        __DIR__.'/config/config.php' => config_path('sms.php')
-	    ], 'smsconfig');
+        $this->publishes([
+            __DIR__ . '/config/config.php' => config_path('sms.php')
+        ], 'smsconfig');
     }
+
     /**
      * Register the application services.
      *
@@ -41,6 +43,7 @@ class SmsServiceProvider extends ServiceProvider
             return new SmsManager($this->app);
         });
     }
+
     /**
      * Get the services provided by the provider.
      *

@@ -11,61 +11,62 @@ namespace Hinet\Sms\Gateways;
 class BaiduGateway extends Gateway
 {
     protected $headers;
-    public function send($mobile, $content='')
+
+    public function send($mobile, $content = '')
     {
         $this->setVerifyCode($mobile);
-        $url = 'http://' . $this->config['endPoint'] . '/bce/v2/message';
+        $url    = 'http://' . $this->config['endPoint'] . '/bce/v2/message';
         $params = [
-            'invokeId'    => $this->config['invokeId'],//你申请的签名ID
-            'phoneNumber'   => $mobile,
+            'invokeId'     => $this->config['invokeId'],//你申请的签名ID
+            'phoneNumber'  => $mobile,
             'templateCode' => $this->getTemplateId(),
-            'contentVar' => array(
-                "code" =>  "{$this->code}",  //模板里面的key变量  ${key}
+            'contentVar'   => array(
+                "code" => "{$this->code}",  //模板里面的key变量  ${key}
             ),
         ];
-        if(is_array($content)){
-            $params = array_merge($content,$params);
+        if (is_array($content)) {
+            $params = array_merge($content, $params);
         }
         $this->genSign($params);
-        return $this->curl($url,$params,'POST',$this->headers);
+        return $this->curl($url, $params, 'POST', $this->headers);
     }
+
     public function response($response)
     {
-        if($response)
-        {
+        if ($response) {
             $result = json_decode($response, true);
-            if($result['code'] == '1000')
-            {
-                return json_encode(['status'=>1,'message'=>'短信发送成功']);
-            }else{
-                return json_encode(['status'=>0,'message'=>'短信发送失败：'.$result['message'].',错误码：'.$result['code']]);
+            if ($result['code'] == '1000') {
+                return json_encode(['status' => 1, 'message' => '短信发送成功']);
+            } else {
+                return json_encode(['status' => 0, 'message' => '短信发送失败：' . $result['message'] . ',错误码：' . $result['code']]);
             }
-        }else{
-            return json_encode(['status'=>0,'message'=>'Http请求错误']);
+        } else {
+            return json_encode(['status' => 0, 'message' => 'Http请求错误']);
         }
     }
+
     protected function genSign($message)
     {
-    	$message = json_encode($message);
-        $signer = new SampleSigner();
-        $credentials = array("ak" => $this->config['accessKey'],"sk" => $this->config['secretAccessKey']);
-        $httpMethod = "POST";
-        $path = "/bce/v2/message";
-        $params = array();
-        $timestamp = new \DateTime();
+        $message     = json_encode($message);
+        $signer      = new SampleSigner();
+        $credentials = array("ak" => $this->config['accessKey'], "sk" => $this->config['secretAccessKey']);
+        $httpMethod  = "POST";
+        $path        = "/bce/v2/message";
+        $params      = array();
+        $timestamp   = new \DateTime();
         $timestamp->setTimezone(new \DateTimeZone("GMT"));
-        $datetime = $timestamp->format("Y-m-d\TH:i:s\Z");
+        $datetime     = $timestamp->format("Y-m-d\TH:i:s\Z");
         $datetime_gmt = $timestamp->format("D, d M Y H:i:s T");
 
-        $headers = array("Host" => $this->config['endPoint']);
-        $str_sha256 = hash('sha256', $message);
+        $headers                         = array("Host" => $this->config['endPoint']);
+        $str_sha256                      = hash('sha256', $message);
         $headers['x-bce-content-sha256'] = $str_sha256;
-        $headers['Content-Length'] = strlen($message);
-        $headers['Content-Type'] = "application/json";
-        $headers['x-bce-date'] = $datetime;
-        $options = array(SignOption::TIMESTAMP => $timestamp, SignOption::HEADERS_TO_SIGN =>array('host', 'x-bce-content-sha256',),);
-        $ret = $signer->sign($credentials, $httpMethod, $path, $headers, $params, $options);
-        $this->headers = array(
+        $headers['Content-Length']       = strlen($message);
+        $headers['Content-Type']         = "application/json";
+        $headers['x-bce-date']           = $datetime;
+        $options                         = array(SignOption::TIMESTAMP => $timestamp, SignOption::HEADERS_TO_SIGN => array('host', 'x-bce-content-sha256',),);
+        $ret                             = $signer->sign($credentials, $httpMethod, $path, $headers, $params, $options);
+        $this->headers                   = array(
             'Content-Type:application/json',
             'Host:' . $this->config['endPoint'],
             'x-bce-date:' . $datetime,
@@ -74,7 +75,7 @@ class BaiduGateway extends Gateway
             'Authorization:' . $ret,
             "Accept-Encoding: gzip,deflate",
             'User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9) Gecko/2008052906 Firefox/3.0',
-            'Date:' .$datetime_gmt,
+            'Date:' . $datetime_gmt,
         );
 
     }
@@ -95,6 +96,7 @@ class BaiduGateway extends Gateway
 * License for the specific language governing permissions and limitations under
 * the License.
 */
+
 class SignOption
 {
     const EXPIRATION_IN_SECONDS = 'expirationInSeconds';
@@ -104,6 +106,7 @@ class SignOption
     const MIN_EXPIRATION_IN_SECONDS = 300;
     const MAX_EXPIRATION_IN_SECONDS = 129600;
 }
+
 class HttpUtil
 {
     // 根据RFC 3986，除了：
@@ -112,6 +115,7 @@ class HttpUtil
     //   3.点'.'、波浪线'~'、减号'-'以及下划线'_'
     // 以外都要编码
     public static $PERCENT_ENCODED_STRINGS;
+
     //填充编码数组
     public static function __init()
     {
@@ -137,11 +141,13 @@ class HttpUtil
         HttpUtil::$PERCENT_ENCODED_STRINGS[ord('_')] = '_';
         HttpUtil::$PERCENT_ENCODED_STRINGS[ord('~')] = '~';
     }
+
     //在uri编码中不能对'/'编码
     public static function urlEncodeExceptSlash($path)
     {
         return str_replace("%2F", "/", HttpUtil::urlEncode($path));
     }
+
     //使用编码数组编码
     public static function urlEncode($value)
     {
@@ -151,6 +157,7 @@ class HttpUtil
         }
         return $result;
     }
+
     //生成标准化QueryString
     public static function getCanonicalQueryString(array $parameters)
     {
@@ -172,7 +179,7 @@ class HttpUtil
             if (isset($v)) {
                 //对于有值的，编码后放在=号两边
                 $parameterStrings[] = HttpUtil::urlEncode($k)
-                    . '=' . HttpUtil::urlEncode((string) $v);
+                    . '=' . HttpUtil::urlEncode((string)$v);
             } else {
                 //对于没有值的，只将key编码后放在=号的左边，右边留空
                 $parameterStrings[] = HttpUtil::urlEncode($k) . '=';
@@ -183,6 +190,7 @@ class HttpUtil
         //使用'&'符号连接它们
         return implode('&', $parameterStrings);
     }
+
     //生成标准化uri
     public static function getCanonicalURIPath($path)
     {
@@ -198,10 +206,11 @@ class HttpUtil
             }
         }
     }
+
     //生成标准化http请求头串
     public static function getCanonicalHeaders($headers)
     {
-	    //print 'getCanonicalHeaders:'.var_export($headers, true);
+        //print 'getCanonicalHeaders:'.var_export($headers, true);
         //如果没有headers，则返回空串
         if (count($headers) == 0) {
             return '';
@@ -225,7 +234,9 @@ class HttpUtil
         return implode("\n", $headerStrings);
     }
 }
+
 HttpUtil::__init();
+
 class SampleSigner
 {
     const BCE_AUTH_VERSION = "bce-auth-v1";
@@ -236,7 +247,8 @@ class SampleSigner
     //    3.content-type
     //    4.content-md5
     public static $defaultHeadersToSign;
-    public static function  __init()
+
+    public static function __init()
     {
         SampleSigner::$defaultHeadersToSign = array(
             "host",
@@ -245,6 +257,7 @@ class SampleSigner
             "content-md5",
         );
     }
+
     //签名函数
     public function sign(
         array $credentials,
@@ -253,7 +266,8 @@ class SampleSigner
         $headers,
         $params,
         $options = array()
-    ) {
+    )
+    {
         //设定签名有效时间
         if (!isset($options[SignOption::EXPIRATION_IN_SECONDS])) {
             //默认值1800秒
@@ -262,7 +276,7 @@ class SampleSigner
             $expirationInSeconds = $options[SignOption::EXPIRATION_IN_SECONDS];
         }
         //解析ak sk
-        $accessKeyId = $credentials['ak'];
+        $accessKeyId     = $credentials['ak'];
         $secretAccessKey = $credentials['sk'];
         //设定时间戳，注意：如果自行指定时间戳需要为UTC时间
         if (!isset($options[SignOption::TIMESTAMP])) {
@@ -294,47 +308,48 @@ class SampleSigner
         $signedHeaders = '';
         if ($headersToSign !== null) {
             $signedHeaders = strtolower(
-                //trim(implode(";", array_keys($headersToSign)))
-				trim(implode(";", $headersToSign))
+            //trim(implode(";", array_keys($headersToSign)))
+                trim(implode(";", $headersToSign))
             );
         }
         //组成标准请求串
         $canonicalRequest = "$httpMethod\n$canonicalURI\n"
             . "$canonicalQueryString\n$canonicalHeader";
         //$canonicalRequest = "$httpMethod\n$canonicalURI\n\nhost:sms.bj.baidubce.com";
-	    //print var_export($canonicalRequest, true);
+        //print var_export($canonicalRequest, true);
         //使用signKey和标准请求串完成签名
         $signature = hash_hmac('sha256', $canonicalRequest, $signingKey);
         //组成最终签名串
         $authorizationHeader = "$authString/$signedHeaders/$signature";
         return $authorizationHeader;
     }
+
     //根据headsToSign过滤应该参与签名的header
     public static function getHeadersToSign($headers, $headersToSign)
     {
 
-	   //print 'headers:' .var_export($headers, true);
-	    //print 'headersToSign:' .var_export($headersToSign, true);
+        //print 'headers:' .var_export($headers, true);
+        //print 'headersToSign:' .var_export($headersToSign, true);
         //value被trim后为空串的header不参与签名
-        $filter_empty = function($v) {
-            return trim((string) $v) !== '';
+        $filter_empty = function ($v) {
+            return trim((string)$v) !== '';
         };
-        $headers = array_filter($headers, $filter_empty);
+        $headers      = array_filter($headers, $filter_empty);
         //处理headers的key：去掉前后的空白并转化成小写
-        $trim_and_lower = function($str){
+        $trim_and_lower = function ($str) {
             return strtolower(trim($str));
         };
-        $temp = array();
-        $process_keys = function($k, $v) use(&$temp, $trim_and_lower) {
+        $temp           = array();
+        $process_keys   = function ($k, $v) use (&$temp, $trim_and_lower) {
             $temp[$trim_and_lower($k)] = $v;
         };
         array_map($process_keys, array_keys($headers), $headers);
-		//array_map($process_keys, array_keys($headersToSign), $headersToSign);
+        //array_map($process_keys, array_keys($headersToSign), $headersToSign);
         $headers = $temp;
-         //print 'headers123:' .var_export($headers, true);
+        //print 'headers123:' .var_export($headers, true);
         //取出headers的key以备用
         $header_keys = array_keys($headers);
-       // print 'header_keys:' .var_export($header_keys, true);
+        // print 'header_keys:' .var_export($header_keys, true);
         $filtered_keys = null;
         if ($headersToSign !== null) {
             //如果有headersToSign，则根据headersToSign过滤
@@ -345,15 +360,15 @@ class SampleSigner
             $filtered_keys = array_intersect_key($header_keys, $headersToSign);
         } else {
             //如果没有headersToSign，则根据默认规则来选取headers
-            $filter_by_default = function($k) {
+            $filter_by_default = function ($k) {
                 return SampleSigner::isDefaultHeaderToSign($k);
             };
-            $filtered_keys = array_filter($header_keys, $filter_by_default);
+            $filtered_keys     = array_filter($header_keys, $filter_by_default);
         }
         //print 'headersToSign123:' .var_export($headersToSign, true);
-		//print 'filtered_keys123:' .var_export($filtered_keys, true);
-		//print 'headers4321:' .var_export($headers, true);
-		//$filtered_keys = array('host');
+        //print 'filtered_keys123:' .var_export($filtered_keys, true);
+        //print 'headers4321:' .var_export($headers, true);
+        //$filtered_keys = array('host');
         //返回需要参与签名的header
         return array_intersect_key($headers, array_flip($filtered_keys));
     }
@@ -369,4 +384,5 @@ class SampleSigner
         return substr_compare($header, SampleSigner::BCE_PREFIX, 0, strlen(SampleSigner::BCE_PREFIX)) == 0;
     }
 }
+
 SampleSigner::__init();

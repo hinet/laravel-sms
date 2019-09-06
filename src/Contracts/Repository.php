@@ -1,4 +1,5 @@
 <?php
+
 namespace Hinet\Sms\Contracts;
 
 interface Repository
@@ -9,17 +10,23 @@ interface Repository
      * @param $content
      * @return mixed
      */
-    public function send($mobile,$content);
-    public function verifyCode($mobile,$value = null);
+    public function send($mobile, $content);
+
+    public function verifyCode($mobile, $value = null);
+
     public function setVerifyCode($time = null);
+
     public function getTemplateContent();
+
     public function getTemplateId();
+
     /**
      * @param $url
      * @param array $params
      * @return mixed
      */
-    public function curl($url,$params = array(),$method);
+    public function curl($url, $params = array(), $method);
+
     /**
      * @param $response
      * @return mixed

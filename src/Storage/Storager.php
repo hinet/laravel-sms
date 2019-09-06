@@ -1,4 +1,5 @@
 <?php
+
 namespace Hinet\Sms\Storage;
 /**
  * 存储接口.
@@ -9,6 +10,8 @@ namespace Hinet\Sms\Storage;
 interface Storager
 {
     public function set($key, $value);
+
     public function get($key, $default);
+
     public function forget($key);
 }
