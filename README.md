@@ -44,7 +44,7 @@ use Sms;
 class HomeController extends Controller
 {
     public function index(){
-    	$gateway = Sms::gateway('qcloud');
+    	$gateway = Sms::gateway('aliyun');
     	//发送
     	echo $gateway->send('测试手机号码');
     	//校验码是否正确
