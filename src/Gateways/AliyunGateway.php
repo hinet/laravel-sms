@@ -20,7 +20,7 @@ class AliyunGateway extends Gateway
         $this->setVerifyCode($mobile,$type);
         //实例化SDK
         AlibabaCloud::accessKeyClient($this->config['app_key'], $this->config['app_secret'])
-            ->regionId($this->config['region_id']) // replace regionId as you need
+            ->regionId($this->config['end_point']) // replace regionId as you need
             ->asDefaultClient();
         try {
 
