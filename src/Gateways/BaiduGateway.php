@@ -23,6 +23,9 @@ class BaiduGateway extends Gateway
                 "code" =>  "{$this->code}",  //模板里面的key变量  ${key}
             ),
         ];
+        if(is_array($content)){
+            $params = array_merge($content,$params);
+        }
         $this->genSign($params);
         return $this->curl($url,$params,'POST',$this->headers);
     }
@@ -309,7 +312,7 @@ class SampleSigner
     //根据headsToSign过滤应该参与签名的header
     public static function getHeadersToSign($headers, $headersToSign)
     {
-	
+
 	   //print 'headers:' .var_export($headers, true);
 	    //print 'headersToSign:' .var_export($headersToSign, true);
         //value被trim后为空串的header不参与签名

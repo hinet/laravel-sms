@@ -22,7 +22,6 @@ class QcloudGateway extends Gateway
             'extend' => "",
             'ext' => "",
         ];
-
         $params['sig'] = $this->genSign($params);
         return $this->curl($url.'?'.'sdkappid='.$this->config['app_id'].'&random='.$this->code,json_encode($params),'POST');
     }

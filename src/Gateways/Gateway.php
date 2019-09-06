@@ -19,7 +19,7 @@ class Gateway implements Repository
         $this->config = $config;
         $this->storage = new Factory($config);
     }
-    public function send($mobile,$content)
+    public function send($mobile,$content='')
     {
         $this->setVerifyCode($mobile);
         $url = 'http://';
@@ -63,7 +63,7 @@ class Gateway implements Repository
         return $state && $state['deadline'] >= time() && $state['to'] === $mobile && $state['verifycode'] == intval($value);
     }
 
-    public function setVerifyCode($phone='')
+    public function setVerifyCode($phone='',$type='')
     {
         $this->code = $this->makeRandom();
         //存储验证码
@@ -78,9 +78,9 @@ class Gateway implements Repository
             return json_encode(['status'=>0,'message'=>'发送过于频繁']);
         }
         $this->storage->storeState();
-        $this->storage->setCanResendAfter(intval($this->config['interval']));
+        $this->storage->setCanResendAfter((int)$this->config['interval']);
         if (empty($this->content)) {
-            $this->content = $this->getTemplateContent();
+            $this->content = $this->getTemplateContent($type);
         }
         $this->content = str_replace('{verifycode}', $this->code, $this->content);
         $this->content = str_replace('{minutes}', $this->config['minutes'], $this->content);
@@ -120,13 +120,21 @@ class Gateway implements Repository
         curl_close( $ch );
         return $this->response($response);
     }
-    public function getTemplateContent()
+    public function getTemplateContent($type='')
     {
-        return $this->config['template']['content'];
+        if(empty($type)) {
+            return $this->config['template']['content'];
+        }else{
+            return $this->config['template'][$type]['content'];
+        }
     }
-    public function getTemplateId()
+    public function getTemplateId($type='')
     {
-        return $this->config['template']['templateid'];
+        if(empty($type)){
+            return $this->config['template']['templateid'];
+        }else{
+            return $this->config['template'][$type]['templateid'];
+        }
     }
     protected function makeRandom()
     {

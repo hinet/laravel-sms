@@ -30,9 +30,25 @@ return[
         'aliyun' =>[
             'app_key' => '',
             'app_secret' => '',
+            'end_point' => 'cn-hangzhou',
+            //短信签名名称
+            'sign_name' => '',
+            //上行短信扩展码，无特殊需要此字段的用户请忽略此字段。
+            'sms_up_extend_code' => '',
             'template' => [
-                'templateid' => '',
-                'content' => ''
+                'register'=>[
+                    'templateid' => '',
+                    'content' => ''
+                ],
+                'updatePassword'=>[
+                    'templateid' => '',
+                    'content' => ''
+                ],
+                'updatePhone'=>[
+                    'templateid' => '',
+                    'content' => ''
+                ]
+
             ]
         ],
         'baidu' =>[
