@@ -13,6 +13,19 @@ class SmsServiceProvider extends ServiceProvider
 	 */
     public function boot()
     {
+        if (!function_exists('config_path'))
+        {
+            /**
+             * Get the configuration path.
+             *
+             * @param  string $path
+             * @return string
+             */
+            function config_path($path = '')
+            {
+                return app()->basePath() . '/config' . ($path ? '/' . $path : $path);
+            }
+        }
 	    $this->publishes([
 	        __DIR__.'/config/config.php' => config_path('sms.php')
 	    ], 'smsconfig');
