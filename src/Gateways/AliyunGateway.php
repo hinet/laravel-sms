@@ -66,7 +66,7 @@ class AliyunGateway extends Gateway
             if ($response['Code'] == 'OK') {
                 return json_encode(['status' => 1, 'message' => '短信发送成功']);
             } else {
-                return json_encode(['status' => 0, 'message' => '短信发送失败：' . $response['Message'] . ',错误码：' . $response['Code']]);
+                return json_encode(['status' => 0, 'message' => $response['Message'] ,'code' => $response['Code']]);
             }
         } else {
             return json_encode(['status' => 0, 'message' => 'Http请求错误']);
