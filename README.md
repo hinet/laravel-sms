@@ -1,6 +1,6 @@
 # laravel-sms
 
-基于Laravel5.*与Lumen的短信发送网关，极易扩展，你可以自由定义自已的网关驱动。
+基于Laravel与Lumen的短信发送网关，极易扩展，你可以自由定义自已的网关驱动。
 
 ## 安装
 composer require hinet/laravel-sms
