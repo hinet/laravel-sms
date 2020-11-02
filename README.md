@@ -55,8 +55,9 @@ class HomeController extends Controller
 
 ## 自定义验证
 
-打开app\Providers\ValidatorServiceProvider.php文件，在boot()方法中添加：
+打开app\Providers\AppServiceProvider.php文件，在boot()方法中添加：
 ```php
+//use Illuminate\Support\Facades\Validator;
 Validator::extend('verify_sms_code', function ($attribute, $value, $parameters) {
 	$mobile = app('request')->input($parameters[0]);
 	$gateway = \Sms::gateway(config('sms.default'));
