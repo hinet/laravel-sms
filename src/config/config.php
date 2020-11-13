@@ -37,16 +37,14 @@ return [
             'sms_up_extend_code' => '',
             'template'           => [
                 'register'       => [
-                    'templateid' => '',
-                    'content'    => ''
+                    'templateid' => ''
                 ],
                 'updatePassword' => [
-                    'templateid' => '',
-                    'content'    => ''
+                    'templateid' => ''
                 ],
                 'updatePhone'    => [
                     'templateid' => '',
-                    'content'    => ''
+                    'sign_name'    => '' //配置其它短信签名
                 ]
 
             ]
@@ -58,7 +56,6 @@ return [
             'invokeId'        => '签名调用ID',
             'template'        => [
                 'templateid' => '模板ID',
-                'content'    => '您的验证码是${code}，如非本人操作，请忽略本短信'
             ]
         ],
     ],
