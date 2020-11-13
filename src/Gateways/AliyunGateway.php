@@ -16,9 +16,9 @@ class AliyunGateway extends Gateway
 {
     protected $headers;
 
-    public function send($mobile, $content = '', $type = 'register')
+    public function send($mobile, $parameters = '', $template = 'register')
     {
-        $this->setVerifyCode($mobile, $type);
+        $this->setVerifyCode($mobile, $template);
         //实例化SDK
         AlibabaCloud::accessKeyClient($this->config['app_key'], $this->config['app_secret'])
             ->regionId($this->config['end_point']) // replace regionId as you need
@@ -28,8 +28,8 @@ class AliyunGateway extends Gateway
             $params = [
                 'code' => $this->code
             ];
-            if (is_array($content)) {
-                $params = array_merge($content, $params);
+            if (is_array($parameters)) {
+                $params = array_merge($parameters, $params);
             }
 
 
@@ -44,8 +44,8 @@ class AliyunGateway extends Gateway
                     'query' => [
                         'RegionId'        => $this->config['end_point'],
                         'PhoneNumbers'    => $mobile,
-                        'SignName'        => $this->config['sign_name'],
-                        'TemplateCode'    => $this->getTemplateId($type),
+                        'SignName'        => isset($this->config['template'][$template]['sign_name']) ? $this->config['template'][$template]['sign_name'] : $this->config['sign_name'],
+                        'TemplateCode'    => $this->getTemplateId($template),
                         'TemplateParam'   => json_encode($params),
                         'SmsUpExtendCode' => $this->config['sms_up_extend_code'],
                     ],
