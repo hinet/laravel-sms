@@ -68,7 +68,7 @@ Validator::extend('verify_sms_code', function ($attribute, $value, $parameters) 
 ```php
 $validator = Validator::make($data, [
       'phone' => 'unique:表名',
-      'verifyCode' => 'verify_sms_code:phone',//phone为表单中的手机号字段名
+      'verifyCode' => 'verify_sms_code:phone',//verify_sms_code为短信验证方法名，phone为表单中的手机号字段名
 ]);
 ```
 
