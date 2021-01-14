@@ -62,7 +62,7 @@ class Gateway implements Repository
                 return false;
             }
         }
-        return $state && $state['deadline'] >= time() && $state['to'] === $mobile && $state['verifycode'] == intval($value);
+        return $state && $state['deadline'] >= time() && $state['to'] == $mobile && $state['verifycode'] == intval($value);
     }
 
     public function setVerifyCode($phone = '', $type = '')
