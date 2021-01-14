@@ -73,7 +73,7 @@ class Gateway implements Repository
             'send'       => true,
             'to'         => $phone,
             'verifycode' => $this->code,
-            'deadline'   => time() + ($this->config['minutes'] * 60),
+            'deadline'   => strtotime("+".$this->config['minutes']." minute"),
             'attempts'   => $this->config['attempts'],
         ]);
         if (!$this->storage->validateSendable()) {
