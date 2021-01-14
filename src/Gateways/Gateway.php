@@ -74,7 +74,7 @@ class Gateway implements Repository
             'to'         => $phone,
             'verifycode' => $this->code,
             'deadline'   => strtotime("+".$this->config['minutes']." minute"),
-            'attempts'   => $this->config['attempts'],
+            'attempts'   => 0,
         ]);
         if (!$this->storage->validateSendable()) {
             return json_encode(['status' => 0, 'message' => '发送过于频繁']);
