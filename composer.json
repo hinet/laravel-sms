@@ -1,7 +1,7 @@
 {
     "name": "hinet/laravel-sms",
     "description": "SMS gateway package for laravel5",
-    "keywords": ["laravel", "laravel短信", "sms", "laravel sms"],
+    "keywords": ["sms", "mobile", "phone", "laravel", "laravel sms", "短信"],
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
