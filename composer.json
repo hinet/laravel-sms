@@ -1,6 +1,6 @@
 {
     "name": "hinet/laravel-sms",
-    "description": "SMS gateway package for laravel5",
+    "description": "SMS gateway package for laravel,supports Alibaba cloud SMS, Tencent cloud SMS and Baidu cloud SMS. It is easy to expand and you can freely define your own gateway driver.",
     "keywords": ["sms", "mobile", "phone", "laravel", "laravel sms", "短信"],
     "license": "MIT",
     "require": {
