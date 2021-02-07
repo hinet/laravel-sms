@@ -46,16 +46,10 @@ class SmsManager
     }
 
     protected function getToken(){
-        $token = $this->app->request->header('Cookie', '');
-        if (empty($token)) {
-            $token = $this->app->request->header('Authorization', '');
-            if(empty($token)){
-                $token = md5(microtime());
-            }else{
-                $token = str_replace('Bearer ','',$token);
-            }
+        if($this->app->request->ajax()){
+            $token = $this->app->request->header('X-CSRF-TOKEN') ?? $this->app->request->cookie('XSRF-TOKEN');
         }else{
-            $token = str_replace('XSRF-TOKEN=','',$token);
+            $token = $this->app->request->input('_token');
         }
         return $token;
     }
