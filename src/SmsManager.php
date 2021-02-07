@@ -35,13 +35,29 @@ class SmsManager
         }
         $className = $factories[$name];
         $config    = $this->getConfig($name);
-        return new $className($config);
+        $token    = $this->getToken();
+        return new $className($config,$token);
     }
 
     protected function getConfig($name)
     {
         $config = $this->array_remove('gateways', $this->app['config']['sms']);
         return array_merge($config, $this->app['config']["sms.gateways.{$name}"]);
+    }
+
+    protected function getToken(){
+        $token = $this->app->request->header('Cookie', '');
+        if (empty($token)) {
+            $token = $this->app->request->header('Authorization', '');
+            if(empty($token)){
+                $token = md5(microtime());
+            }else{
+                $token = str_replace('Bearer ','',$token);
+            }
+        }else{
+            $token = str_replace('XSRF-TOKEN=','',$token);
+        }
+        return $token;
     }
 
     protected function getDefaultGateway()

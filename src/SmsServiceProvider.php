@@ -39,8 +39,9 @@ class SmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('sms', function () {
-            return new SmsManager($this->app);
+    	$this->mergeConfigFrom(__DIR__ . '/config/config.php', 'sms');
+        $this->app->singleton('sms', function ($app) {
+            return new SmsManager($app);
         });
     }
 

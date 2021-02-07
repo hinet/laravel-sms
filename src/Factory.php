@@ -19,10 +19,13 @@ class Factory
     //存储器驱动
     protected static $driver;
 
-    public function __construct($config)
+    public function __construct($config,$token)
     {
         $this->config = $config;
         self::$driver = $this->config['storage']['driver'];
+        if ($token && is_string($token)) {
+            $this->token = $token;
+        }
         $this->reset();
     }
 
@@ -63,7 +66,7 @@ class Factory
     protected function generateKey()
     {
         $split  = '.';
-        $prefix = empty($this->config['storage']['prefix']) ? 'laravel_sms' : $this->config['storage']['prefix'];
+        $prefix = config($this->config['storage']['prefix'], 'laravel_sms');
         $args   = func_get_args();
         array_unshift($args, $this->token);
         $args = array_filter($args, function ($value) {

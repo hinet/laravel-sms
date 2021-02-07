@@ -16,10 +16,10 @@ class Gateway implements Repository
     //短信内容
     protected $content;
 
-    function __construct($config)
+    function __construct($config,$token)
     {
         $this->config  = $config;
-        $this->storage = new Factory($config);
+        $this->storage = new Factory($config,$token);
     }
 
     public function send($mobile, $content = '')
