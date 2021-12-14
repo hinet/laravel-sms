@@ -31,6 +31,16 @@ php artisan vendor:publish --tag=smsconfig
         'driver' => 'cache',//存储方式,内置可选的值有'session'和'cache',api路由中请使用cache
 ]
 ```
+## 网关
+
+| 平台 | 网关名称 |
+| --- | --- |
+| 阿里云 | aliyun |
+| 腾讯云 | qcloud |
+| 百度云 | baidu |
+| 聚合 | juhe |
+| sendcloud | sendcloud |
+
 ## 使用方法
 
 ```php
@@ -58,7 +68,7 @@ class HomeController extends Controller
 打开app\Providers\AppServiceProvider.php文件，在boot()方法中添加：
 ```php
 //use Illuminate\Support\Facades\Validator;
-Validator::extend('verify_sms_code', function ($attribute, $value, $parameters) {
+Validator::extend('verify_sms', function ($attribute, $value, $parameters) {
 	$mobile = app('request')->input($parameters[0]);
 	$gateway = \Sms::gateway(config('sms.default'));
 	return $gateway->verifyCode($mobile,$value);
@@ -68,7 +78,7 @@ Validator::extend('verify_sms_code', function ($attribute, $value, $parameters) 
 ```php
 $validator = Validator::make($data, [
       'phone' => 'unique:表名',
-      'verifyCode' => 'verify_sms_code:phone',//verify_sms_code为短信验证方法名，phone为表单中的手机号字段名
+      'verifyCode' => 'sms:phone',//verify_sms为短信验证方法名，phone为表单中的手机号字段名
 ]);
 ```
 
