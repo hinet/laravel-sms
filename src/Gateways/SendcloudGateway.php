@@ -12,13 +12,13 @@ class SendcloudGateway extends Gateway
 {
     protected $headers;
 
-    public function send($mobile, $content = '')
+    public function send($mobile, $content = '', $template = 'register')
     {
-        $this->setVerifyCode($mobile);
+        $this->setVerifyCode($mobile, $template);
         $url    = 'https://api.sendcloud.net/smsapi/send';
         $params = [
             'smsUser'     => $this->config['SMS_USER'],//你申请的签名ID
-            'templateId' => $this->getTemplateId(),
+            'templateId' => $this->getTemplateId($template),
             'phone'  => $mobile,
             'msgType' => 0, //0表示短信, 1表示彩信,2表示国际短信,3表示国内语音,5表示影音 默认值为0
             'vars'   => json_encode(array(
