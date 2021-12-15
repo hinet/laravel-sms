@@ -123,7 +123,11 @@ class Gateway implements Repository
     public function getTemplateContent($type = '')
     {
         if (empty($type)) {
-            return $this->config['template']['content'];
+            if(isset($this->config['template']['content'])){
+                return $this->config['template']['content'];
+            }else{
+                return $this->config['template'][0]['content'];
+            }
         } else {
             return $this->config['template'][$type]['content'];
         }
