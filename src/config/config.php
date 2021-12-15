@@ -62,8 +62,10 @@ return [
             'SMS_USER'        => '',//调用接口发信时候的账号
             'SMS_KEY'       => '',
             'template'        => [
-                'templateid' => '',
-                'content'    => '您的验证码是${code}，如非本人操作，请忽略本短信'
+                'register'       => [
+                    'templateid' => '',
+                    'content'    => '您的验证码是${code}，如非本人操作，请忽略本短信'
+                ],
             ]
         ],
     ],
