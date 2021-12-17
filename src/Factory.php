@@ -107,7 +107,6 @@ class Factory
     public function storeState()
     {
         $this->updateState($this->state);
-        $this->reset();
     }
 
     /**
