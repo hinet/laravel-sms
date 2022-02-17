@@ -12,12 +12,15 @@ return [
     'fallback' => '',
     //短信网关
     'gateways' => [
+        //短信API服务（验证码）
         'juhe'   => [
-            'app_key'    => '',
-            'app_secret' => '',
+            'app_key'    => '',//请求Key
             'template'   => [
-                'templateid' => '',
-                'content'    => '',
+                'register'       => [
+                    'templateid' => 0,//短信模板ID，查看我的模板
+                    'content' => '您正在注册，您的验证码是#code#。如非本人操作，请忽略本短信',
+                    'des' => '#code#变量仅允许长度为4-8位的数字'
+                ],
             ]
         ],
         'qcloud' => [
