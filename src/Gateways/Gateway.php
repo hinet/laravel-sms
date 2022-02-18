@@ -126,7 +126,7 @@ class Gateway implements Repository
             if(isset($this->config['template']['content'])){
                 return $this->config['template']['content'];
             }else{
-                return $this->config['template'][0]['content'];
+                return '';
             }
         } else {
             return $this->config['template'][$type]['content'];
